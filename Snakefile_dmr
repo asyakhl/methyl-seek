@@ -31,7 +31,8 @@ bisulphite_genome_path= config["bisulphite_ref"]
 phage_genome_path= config["phage_ref"]
 bisulphite_fa= config["bisulphite_fa"]
 species= config["species"]
-
+samples_number=config["samples_number"]
+coverage=config["cov"]
 ##
 ## Read in the masterkey file for 3 tab-delimited columns of samples, groups and comparison
 ## Each sample can be in the file multiple times if used in multiple comparisons, but will only be mapped/process once.
@@ -202,8 +203,10 @@ rule get_bsmooth_dmrs:
   output: join(working_dir,"{group}_dmrs.txt")
   params: script_dir=join(working_dir, "MethylSnakemake", "scripts"),
           comp='{group}',
-          rname="get_bsmooth_dmrs"
+          rname="get_bsmooth_dmrs",
+          samples_num=samples_number,
+          cov=coverage
   shell:
     """
-    Rscript {params.script_dir}/get_bsmooth_dmrs.R {input.samples} {input.fit} {input.bizfile} {params.comp} {output}
+    Rscript {params.script_dir}/get_bsmooth_dmrs.R {input.samples} {input.fit} {input.bizfile} {params.comp} {params.samples_num} {params.cov} {output}
     """
