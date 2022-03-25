@@ -123,4 +123,16 @@
               "partition": "norm",
               "threads": "16",
       },
+      "bsmooth_bismark": {
+              "mem": "1500g",
+              "time": "20:00:00",
+              "partition": "largemem",
+              "threads": "30",
+      },
+      "get_bsmooth_dmrs": {
+              "mem": "200g",
+              "time": "08:00:00",
+              "partition": "norm",
+              "threads": "10",
+      },
 }

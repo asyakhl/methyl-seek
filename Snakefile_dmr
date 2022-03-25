@@ -202,7 +202,7 @@ rule get_bsmooth_dmrs:
   output: join(working_dir,"{group}_dmrs.txt")
   params: script_dir=join(working_dir, "MethylSnakemake", "scripts"),
           comp='{group}',
-  threads:
+          rname="get_bsmooth_dmrs"
   shell:
     """
     Rscript {params.script_dir}/get_bsmooth_dmrs.R {input.samples} {input.fit} {input.bizfile} {params.comp} {output}
