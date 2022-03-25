@@ -19,7 +19,9 @@ BS_samples=args[1]
 BS_samples_fit=args[2]
 bis_files = read.delim(args[3])
 
+
 comp=args[4]
+samples_condition=as.character(args[5])
 a=unlist(strsplit(comp,"vs"))[1]
 b=unlist(strsplit(comp,"vs"))[2]
 
@@ -32,9 +34,16 @@ for (i in seq_along((1:22, "X","M","Y"))){
   pData(samples)$group=bis_files$group
 
   BS.cov <- getCoverage(fit)
-
-  keepLoci.ex <- which(rowSums(BS.cov[, which(samples$group ==a)] >= 2) >= 2 &
+  
+  if(samples_condition=="min"){
+    keepLoci.ex <- which(rowSums(BS.cov[, which(samples$group ==a)] >= 2) >= 2 &
                        rowSums(BS.cov[, which(samples$group == b)] >= 2) >= 2)
+  }else{
+    samples_number <- min(table((pData(samples)$group))
+    samples_number <- samples_number*as.numeric(samples_condition)/100
+    keepLoci.ex <- which(rowSums(BS.cov[, which(samples$group ==a)] >= 2) >= samples_number &
+                       rowSums(BS.cov[, which(samples$group == b)] >= 2) >= samples_number)
+  }
   length(keepLoci.ex)
 
   fit <- fit[keepLoci.ex,]
@@ -63,5 +72,5 @@ for (i in seq_along((1:22, "X","M","Y"))){
 }
 
 df=bind_rows(l1)
-write.table(df,file=args[5],
+write.table(df,file=args[6],
             quote=F,sep="\t",col.names = T, row.names = F)
